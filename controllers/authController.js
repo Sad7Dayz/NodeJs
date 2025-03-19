@@ -10,33 +10,34 @@ const User = require("../models/usersModel");
 const { doHash, doHashValidation, hmacProcess } = require("../utils/hashing");
 const transport = require("../middlewares/sendMail");
 
-// 회원가입 요청을 처리하는 함수입니다.
+// 회원가입 요청을 처리하는 함수
 exports.signup = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body; // 요청 본문에서 이메일과 비밀번호를 추출
   try {
+    // Joi를 사용하여 이메일과 비밀번호를 검증
     const { error, value } = signupSchema.validate({ email, password });
-
     if (error) {
       return res
         .status(401)
         .json({ success: false, message: error.details[0].message });
     }
-    const existingUser = await User.findOne({ email });
 
+    // 이메일이 이미 존재하는지 확인
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
         .status(401)
         .json({ success: false, message: "User already exists!" });
     }
 
+    // 비밀번호를 해싱하여 저장
     const hashedPassword = await doHash(password, 12);
-
     const newUser = new User({
       email,
       password: hashedPassword,
     });
     const result = await newUser.save();
-    result.password = undefined;
+    result.password = undefined; // 응답에서 비밀번호를 제외
     res.status(201).json({
       success: true,
       message: "Your account has been created successfully",
@@ -47,9 +48,11 @@ exports.signup = async (req, res) => {
   }
 };
 
+// 로그인 요청을 처리하는 함수
 exports.signin = async (req, res) => {
   const { email, password } = req.body;
   try {
+    // Joi를 사용하여 이메일과 비밀번호를 검증
     const { error, value } = signinSchema.validate({ email, password });
     if (error) {
       return res
@@ -57,18 +60,23 @@ exports.signin = async (req, res) => {
         .json({ success: false, message: error.details[0].message });
     }
 
+    // 사용자가 존재하는지 확인
     const existingUser = await User.findOne({ email }).select("+password");
     if (!existingUser) {
       return res
         .status(401)
         .json({ success: false, message: "User does not exists!" });
     }
+
+    // 비밀번호 검증
     const result = await doHashValidation(password, existingUser.password);
     if (!result) {
       return res
         .status(401)
         .json({ success: false, message: "Invalid credentials!" });
     }
+
+    // JWT 토큰 생성
     const token = jwt.sign(
       {
         userId: existingUser._id,
@@ -76,11 +84,10 @@ exports.signin = async (req, res) => {
         verified: existingUser.verified,
       },
       process.env.TOKEN_SECRET,
-      {
-        expiresIn: "8h",
-      }
+      { expiresIn: "8h" }
     );
 
+    // 쿠키에 토큰 저장 및 응답
     res
       .cookie("Authorization", "Bearer " + token, {
         expires: new Date(Date.now() + 8 * 3600000),
@@ -97,13 +104,15 @@ exports.signin = async (req, res) => {
   }
 };
 
+// 로그아웃 요청을 처리하는 함수
 exports.signout = async (req, res) => {
   res
-    .clearCookie("Authorization")
+    .clearCookie("Authorization") // 쿠키 삭제
     .status(200)
     .json({ success: true, message: "logged out successfully" });
 };
 
+// 이메일 인증 코드를 전송하는 함수
 exports.sendVerificationCode = async (req, res) => {
   const { email } = req.body;
   try {
@@ -119,6 +128,7 @@ exports.sendVerificationCode = async (req, res) => {
         .json({ success: false, message: "You are already verified!" });
     }
 
+    // 인증 코드 생성 및 전송
     const codeValue = Math.floor(Math.random() * 1000000).toString();
     let info = await transport.sendMail({
       from: process.env.NODE_CODE_SENDING_EMAIL_ADDRESS,
@@ -143,6 +153,7 @@ exports.sendVerificationCode = async (req, res) => {
   }
 };
 
+// 이메일 인증 코드를 검증하는 함수
 exports.verifyVerificationCode = async (req, res) => {
   const { email, providedCode } = req.body;
   try {
@@ -206,6 +217,7 @@ exports.verifyVerificationCode = async (req, res) => {
   }
 };
 
+// 비밀번호 변경 요청을 처리하는 함수
 exports.changePassword = async (req, res) => {
   const { userId, verified } = req.user;
   const { oldPassword, newPassword } = req.body;

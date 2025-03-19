@@ -1,6 +1,6 @@
 const express = require("express");
-const postsController = require("../controllers/postsController");
-const { identifier } = require("../middlewares/identification");
+const postsController = require("../../controllers/postsController");
+const { identifier } = require("../../middlewares/identification");
 
 // 라우터 객체를 생성합니다.
 const router = express.Router();
