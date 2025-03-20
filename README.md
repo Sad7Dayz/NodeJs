@@ -1,1 +1,11 @@
-### [Build a Complete API with Node.js, Express & MongoDB  Auth, JWT, CRUD](https://youtu.be/EMv8pc5Xo88?si=RJfc8kHPmSXOPtzY)
+# Build a Complete API with Node.js, Express & MongoDB  
+### Features: Auth, JWT, CRUD, Winston Logging
+
+[![YouTube Video](https://img.shields.io/badge/Watch-YouTube-red?logo=youtube)](https://youtu.be/EMv8pc5Xo88?si=RJfc8kHPmSXOPtzY)
+[![YouTube Video](https://img.shields.io/badge/Watch-YouTube-red?logo=youtube)](https://youtu.be/nBk8yR9WjL4?si=JUIFaG29dT_MRIqF)
+## API Versioning
+- Versioning strategies for maintaining multiple API versions.
+- Implementing versioning in Express using URL prefixes.
+- Best practices for backward compatibility.
+
+---
