@@ -9,9 +9,12 @@ const cookieParser = require("cookie-parser");
 
 const mongoose = require("mongoose");
 
+const logger = require("./utils/logger");
+
 //버전별 라우터 가져오기
 const authRouterV1 = require("./routers/v1/authRouter");
 const postsRouterV1 = require("./routers/v1/postsRouter");
+
 const { version } = require("joi");
 // Express 애플리케이션을 생성합니다.
 const app = express();
@@ -33,10 +36,12 @@ mongoose
   .then(() => {
     // 데이터베이스 연결 성공 시 메시지를 출력합니다.
     console.log("Database Connected!");
+    logger.error("Database", "Database Connected!");
   })
   .catch((err) => {
     // 데이터베이스 연결 실패 시 에러를 출력합니다.
     console.log(err);
+    logger.error(err);
   });
 
 // 버전별 라우트 마운트
@@ -75,4 +80,5 @@ app.get("/", (req, res) => {
 app.listen(process.env.PORT, () => {
   // 서버가 실행 중임을 콘솔에 출력합니다.
   console.log("listening..");
+  logger.error("listening..");
 });
