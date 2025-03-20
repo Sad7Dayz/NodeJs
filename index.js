@@ -6,8 +6,10 @@ const helmet = require("helmet");
 const cors = require("cors");
 // Cookie-parser 모듈을 가져옵니다. 쿠키를 파싱합니다.
 const cookieParser = require("cookie-parser");
-
+// MongoDB 모듈을 가져옵니다.
 const mongoose = require("mongoose");
+//속도제한 설정합나디ㅏ.
+const rateLimit = require("express-rate-limit");
 
 const logger = require("./utils/logger");
 
@@ -18,6 +20,30 @@ const postsRouterV1 = require("./routers/v1/postsRouter");
 const { version } = require("joi");
 // Express 애플리케이션을 생성합니다.
 const app = express();
+
+const defaultLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, //15분
+  max: 100, //IP당 15분 동안 최대 100개 요청
+  standardHeaders: true, //'RateLimnit-*' 헤더 포함
+  legacyHaders: false, //'X-RateLimit-*' 헤더 비활성화
+  message: {
+    success: false,
+    message: "너무 많은 요청이 발생햇습니다. 15분후에 다시 시도해주세요.",
+  },
+});
+
+//로그인.회원가입 속도 제한 설정
+const authLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, //1시간
+  max: 5, //IP당 1시간 동안 최대 5개 요청
+  standardHeaders: true,
+  legacyHaders: false,
+  message: {
+    success: false,
+    message: "너무 많은 인증 요청이 발생햇습니다. 1시간후에 다시 시도해주세요.",
+  },
+});
+
 // CORS 미들웨어를 사용합니다.
 app.use(cors());
 // Helmet 미들웨어를 사용합니다.
@@ -29,6 +55,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // 쿠키를 파싱하는 미들웨어를 사용합니다.
 app.use(cookieParser());
+
+//모든 요청에 기본 속도 제한 적용
+app.use(defaultLimiter);
 
 // MongoDB 데이터베이스에 연결합니다.
 mongoose
@@ -43,6 +72,12 @@ mongoose
     console.log(err);
     logger.error(err);
   });
+
+// 특정 엔드포인트에 더 엄격한 속도 제한 적용
+app.use("/api/v1/auth/signin", authLimiter);
+app.use("/api/v1/auth/signup", authLimiter);
+app.use("/api/v1/auth/send-verification-code", authLimiter);
+app.use("/api/v1/auth/send-forgot-password-code", authLimiter);
 
 // 버전별 라우트 마운트
 app.use("/api/v1/auth", authRouterV1);
@@ -66,6 +101,7 @@ app.get("/", (req, res) => {
         status: "활성",
         endpoints: ["/api/v1/auth", "/api/v1/posts"],
       },
+
       // 향후 API 버전을 위한 코드
       // v2: {
       //   status: "베타",
