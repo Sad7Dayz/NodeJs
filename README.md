@@ -21,3 +21,11 @@
 ## Rate Limiting
 - **Why?** Protect API from excessive requests and potential abuse.
 - **How?** Using `express-rate-limit` to limit requests per IP.
+
+## HTTPS
+- Why? Encrypt data in transit to enhance security.
+- How? Use https module with SSL/TLS certificates.
+
+## Allowlist (IP Whitelisting)
+- Why? Restrict API access to only trusted IP addresses.
+- How? Middleware to allow only specific IPs.
