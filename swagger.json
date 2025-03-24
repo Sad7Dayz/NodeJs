@@ -1,0 +1,325 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Documentation",
+    "version": "1.0.0",
+    "description": "API documentation for authentication and posts-related endpoints."
+  },
+  "paths": {
+    "/api/v1/auth/signup": {
+      "post": {
+        "summary": "사용자 회원가입",
+        "description": "이메일과 비밀번호를 사용하여 회원가입합니다.",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "securepassword"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "생성 성공"
+          },
+          "401": {
+            "description": "생성 실패"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signin": {
+      "post": {
+        "summary": "사용자 로그인",
+        "description": "이메일과 비밀번호를 사용하여 로그인합니다.",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "securepassword"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "로그인 성공"
+          },
+          "401": {
+            "description": "인증 실패"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signout": {
+      "post": {
+        "summary": "사용자 로그아웃",
+        "description": "사용자를 로그아웃합니다.",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "로그아웃 성공"
+          },
+          "401": {
+            "description": "인증 실패"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/send-verification-code": {
+      "patch": {
+        "summary": "인증 코드 전송",
+        "description": "사용자에게 인증 코드를 전송합니다.",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "코드 전송 성공"
+          },
+          "401": {
+            "description": "인증 실패"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/verify-verification-code": {
+      "patch": {
+        "summary": "인증 코드 검증",
+        "description": "사용자가 입력한 인증 코드를 검증합니다.",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "코드 검증 성공"
+          },
+          "401": {
+            "description": "코드 검증 실패"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/change-password": {
+      "patch": {
+        "summary": "비밀번호 변경",
+        "description": "사용자의 비밀번호를 변경합니다.",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "비밀번호 변경 성공"
+          },
+          "401": {
+            "description": "비밀번호 변경 실패"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/send-forgot-password-code": {
+      "patch": {
+        "summary": "비밀번호 재설정 코드 전송",
+        "description": "비밀번호 재설정을 위한 코드를 전송합니다.",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "코드 전송 성공"
+          },
+          "401": {
+            "description": "코드 전송 실패"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/verify-forgot-password-code": {
+      "patch": {
+        "summary": "비밀번호 재설정 코드 검증",
+        "description": "비밀번호 재설정을 위한 코드를 검증합니다.",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "코드 검증 성공"
+          },
+          "401": {
+            "description": "코드 검증 실패"
+          }
+        }
+      }
+    },
+    "/api/v1/posts/all-posts": {
+      "get": {
+        "summary": "모든 게시물 가져오기",
+        "description": "모든 게시물을 가져옵니다.",
+        "tags": ["Posts"],
+        "responses": {
+          "200": {
+            "description": "게시물 목록 반환 성공"
+          },
+          "500": {
+            "description": "서버 오류"
+          }
+        }
+      }
+    },
+    "/api/v1/posts/single-post": {
+      "get": {
+        "summary": "단일 게시물 가져오기",
+        "description": "특정 게시물을 가져옵니다.",
+        "tags": ["Posts"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "query",
+            "required": true,
+            "description": "게시물의 ID",
+            "schema": {
+              "type": "string",
+              "example": "12345"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시물 반환 성공"
+          },
+          "404": {
+            "description": "게시물을 찾을 수 없음"
+          },
+          "500": {
+            "description": "서버 오류"
+          }
+        }
+      }
+    },
+    "/api/v1/posts/create-post": {
+      "post": {
+        "summary": "게시물 생성",
+        "description": "새로운 게시물을 생성합니다.",
+        "tags": ["Posts"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "게시물 제목"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "게시물 내용"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "게시물 생성 성공"
+          },
+          "400": {
+            "description": "잘못된 요청"
+          },
+          "500": {
+            "description": "서버 오류"
+          }
+        }
+      }
+    },
+    "/api/v1/posts/update-post": {
+      "put": {
+        "summary": "게시물 수정",
+        "description": "기존 게시물을 수정합니다.",
+        "tags": ["Posts"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "postId": {
+                    "type": "string",
+                    "example": "12345"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "수정된 제목"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "수정된 내용"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "게시물 수정 성공"
+          },
+          "404": {
+            "description": "게시물을 찾을 수 없음"
+          },
+          "500": {
+            "description": "서버 오류"
+          }
+        }
+      }
+    },
+    "/api/v1/posts/delete-post": {
+      "delete": {
+        "summary": "게시물 삭제",
+        "description": "특정 게시물을 삭제합니다.",
+        "tags": ["Posts"],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "query",
+            "required": true,
+            "description": "삭제할 게시물의 ID",
+            "schema": {
+              "type": "string",
+              "example": "12345"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "게시물 삭제 성공"
+          },
+          "404": {
+            "description": "게시물을 찾을 수 없음"
+          },
+          "500": {
+            "description": "서버 오류"
+          }
+        }
+      }
+    }
+  }
+}

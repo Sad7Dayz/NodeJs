@@ -35,6 +35,11 @@ const { version } = require("joi");
 // Express 애플리케이션을 생성합니다.
 const app = express();
 
+//Swagger
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // HTTPS 옵션 설정 (SSL 인증서 로드)
 const httpsOptions = {
   key: fs.readFileSync("../NodeJs/certs/certs/key.pem"), // 개인 키 파일

@@ -15,10 +15,10 @@ const logger = createLogger({
     new transports.MongoDB({
       level: "error",
       db: process.env.MONGO_URI,
-      options: {
-        useunifiedTopology: true,
-      },
       collection: "serverdata",
+      options: {
+        useUnifiedTopology: true,
+      },
       format: format.combine(format.timestamp(), format.json()),
     }),
   ],
