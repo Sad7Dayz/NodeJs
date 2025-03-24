@@ -1,5 +1,5 @@
 # Build a Complete API with Node.js, Express & MongoDB  
-### Features: Auth, JWT, CRUD, Winston Logging, Rate Limiting, HTTPS
+### Features: Auth, JWT, CRUD, Winston Logging, Rate Limiting, HTTPS, Allowlist, Swagger
 
 [![YouTube Video](https://img.shields.io/badge/Watch-YouTube-red?logo=youtube)](https://youtu.be/EMv8pc5Xo88?si=RJfc8kHPmSXOPtzY)
 [![YouTube Video](https://img.shields.io/badge/Watch-YouTube-red?logo=youtube)](https://youtu.be/nBk8yR9WjL4?si=JUIFaG29dT_MRIqF)
