@@ -10,6 +10,10 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 //속도제한 설정합나디ㅏ.
 const rateLimit = require("express-rate-limit");
+//fs
+const fs = require("fs");
+//https
+const https = require("https");
 
 const logger = require("./utils/logger");
 
@@ -20,6 +24,11 @@ const postsRouterV1 = require("./routers/v1/postsRouter");
 const { version } = require("joi");
 // Express 애플리케이션을 생성합니다.
 const app = express();
+
+const httpsOptions = {
+  key: fs.readFileSync("../NodeJs/certs/certs/key.pem"),
+  cert: fs.readFileSync("../NodeJs/certs/certs/cert.pem"),
+};
 
 const defaultLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, //15분
@@ -113,8 +122,14 @@ app.get("/", (req, res) => {
 });
 
 // 서버를 지정된 포트에서 실행합니다.
-app.listen(process.env.PORT, () => {
-  // 서버가 실행 중임을 콘솔에 출력합니다.
+const PORT = process.env.PORT || 8000;
+https.createServer(httpsOptions, app).listen(PORT, () => {
   console.log("listening..");
-  logger.error("listening..");
+  logger.info("listening..");
 });
+
+// app.listen(process.env.PORT, () => {
+//   // 서버가 실행 중임을 콘솔에 출력합니다.
+//   console.log("listening..");
+//   logger.error("listening..");
+// });
