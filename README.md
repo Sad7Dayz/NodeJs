@@ -33,4 +33,4 @@
 
 ## Swagger API Documentation
 - Why? Automatically generate API documentation for better usability.
-- How? Use swagger-jsdoc and swagger-ui-express to set up Swagger in Express.
+- How? Use swagger-ui-express to set up Swagger in Express.
