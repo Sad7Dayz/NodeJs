@@ -12,6 +12,7 @@
 - **Rate Limiting**: Prevent abuse with request throttling.
 - **HTTPS Support**: Secure API communication with SSL/TLS.
 - **Allowlist**: Restrict access to trusted IPs.
+- **Swagger API Documentation**: Auto-generate API documentation.
 - 
 ## API Versioning
 - Implementing versioning in Express using URL prefixes (`/api/v1`, `/api/v2`).
@@ -29,3 +30,7 @@
 ## Allowlist (IP Whitelisting)
 - Why? Restrict API access to only trusted IP addresses.
 - How? Middleware to allow only specific IPs.
+
+## Swagger API Documentation
+- Why? Automatically generate API documentation for better usability.
+- How? Use swagger-jsdoc and swagger-ui-express to set up Swagger in Express.
