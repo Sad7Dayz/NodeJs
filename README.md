@@ -11,6 +11,7 @@
 - **API Versioning**: Maintain multiple API versions efficiently.
 - **Rate Limiting**: Prevent abuse with request throttling.
 - **HTTPS Support**: Secure API communication with SSL/TLS.
+- **Allowlist**: Restrict access to trusted IPs.
 - 
 ## API Versioning
 - Implementing versioning in Express using URL prefixes (`/api/v1`, `/api/v2`).
