@@ -2,3 +2,6 @@ npm i express bcryptjs cookie-parser cors helmet joi jsonwebtoken mongoose nodem
 
 --winstorm
 https://youtu.be/nBk8yR9WjL4?si=JUIFaG29dT_MRIqF
+
+--hhtps 설치
+https://blog.naver.com/kisukim94/223773992315
